@@ -16,6 +16,7 @@ Licensed under the MIT License <http://opensource.org/licenses/MIT>.
 #define LOGGING_H
 #include <inttypes.h>
 #include <stdarg.h>
+
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "Arduino.h"
 #else
@@ -33,10 +34,10 @@ typedef void (*printfunction)(Print*);
 #define LOG_LEVEL_SILENT  0
 #define LOG_LEVEL_FATAL   1
 #define LOG_LEVEL_ERROR   2
-#define LOG_LEVEL_WARNING 3
-#define LOG_LEVEL_NOTICE  4
-#define LOG_LEVEL_TRACE   5
-#define LOG_LEVEL_VERBOSE 6
+#define LOG_LEVEL_WARN    3
+#define LOG_LEVEL_INFO    4
+#define LOG_LEVEL_DEBUG   5
+#define LOG_LEVEL_TRACE   6
 
 #define CR "\n"
 #define LOGGING_VERSION 1_0_3
@@ -71,10 +72,10 @@ typedef void (*printfunction)(Print*);
  * 0 - LOG_LEVEL_SILENT     no output
  * 1 - LOG_LEVEL_FATAL      fatal errors
  * 2 - LOG_LEVEL_ERROR      all errors
- * 3 - LOG_LEVEL_WARNING    errors and warnings
- * 4 - LOG_LEVEL_NOTICE     errors, warnings and notices
- * 5 - LOG_LEVEL_TRACE      errors, warnings, notices, traces
- * 6 - LOG_LEVEL_VERBOSE    all
+ * 3 - LOG_LEVEL_WARN       errors and warnings
+ * 4 - LOG_LEVEL_INFO       errors, warnings and notices
+ * 5 - LOG_LEVEL_DEBUG      errors, warnings, notices, traces
+ * 6 - LOG_LEVEL_TRACE      all
  */
 
 class Logging
@@ -87,7 +88,7 @@ public:
 #ifndef DISABLE_LOGGING
 		: _level(LOG_LEVEL_SILENT),
 		_showLevel(true),
-		_logOutput(NULL)
+		_logOutput(nullptr)
 #endif
 	{
 
@@ -190,67 +191,67 @@ public:
 	 * Output a warning message. Output message contains
 	 * W: followed by original message
 	 * Warning messages are printed out at
-	 * loglevels >= LOG_LEVEL_WARNING
+	 * loglevels >= LOG_LEVEL_WARN
 	 * 
 	 * \param msg format string to output
 	 * \param ... any number of variables
 	 * \return void
 	 */
-	template <class T, typename... Args> void warning(T msg, Args...args)
+	template <class T, typename... Args> void warn(T msg, Args...args)
 	{
 #ifndef DISABLE_LOGGING
-		printLevel(LOG_LEVEL_WARNING, msg, args...);
+		printLevel(LOG_LEVEL_WARN, msg, args...);
 #endif
 	}
 
 	/**
-	 * Output a notice message. Output message contains
+	 * Output a info message. Output message contains
 	 * N: followed by original message
 	 * Notice messages are printed out at
-	 * loglevels >= LOG_LEVEL_NOTICE
+	 * loglevels >= LOG_LEVEL_INFO
 	 * 
 	 * \param msg format string to output
 	 * \param ... any number of variables
 	 * \return void
 	 */
-	template <class T, typename... Args> void notice(T msg, Args...args)
+	template <class T, typename... Args> void info(T msg, Args...args)
 	{
 #ifndef DISABLE_LOGGING
-		printLevel(LOG_LEVEL_NOTICE, msg, args...);
+		printLevel(LOG_LEVEL_INFO, msg, args...);
 #endif
 	}
 
 	/**
-	 * Output a trace message. Output message contains
+	 * Output a debug message. Output message contains
 	 * N: followed by original message
 	 * Trace messages are printed out at
-	 * loglevels >= LOG_LEVEL_TRACE
+	 * loglevels >= LOG_LEVEL_DEBUG
 	 * 
 	 * \param msg format string to output
 	 * \param ... any number of variables
 	 * \return void
 	*/
-	template <class T, typename... Args> void trace(T msg, Args... args)
+	template <class T, typename... Args> void debug(T msg, Args... args)
 	{
 #ifndef DISABLE_LOGGING
-		printLevel(LOG_LEVEL_TRACE, msg, args...);
+		printLevel(LOG_LEVEL_DEBUG, msg, args...);
 #endif
 	}
 
 	/**
-	 * Output a verbose message. Output message contains
+	 * Output a trace message. Output message contains
 	 * V: followed by original message
 	 * Debug messages are printed out at
-	 * loglevels >= LOG_LEVEL_VERBOSE
+	 * loglevels >= LOG_LEVEL_TRACE
 	 * 
 	 * \param msg format string to output
 	 * \param ... any number of variables
 	 * \return void
 	 */
-	template <class T, typename... Args> void verbose(T msg, Args... args)
+	template <class T, typename... Args> void trace(T msg, Args... args)
 	{
 #ifndef DISABLE_LOGGING
-		printLevel(LOG_LEVEL_VERBOSE, msg, args...);
+		printLevel(LOG_LEVEL_TRACE  , msg, args...);
 #endif
 	}
 
@@ -269,13 +270,13 @@ private:
 			return;
 		}
 
-		if (_prefix != NULL)
+		if (_prefix != nullptr)
 		{
 			_prefix(_logOutput);
 		}
 
 		if (_showLevel) {
-			static const char levels[] = "FEWNTV";
+			static const char levels[] = "FEWIDT";
 			_logOutput->print(levels[level - 1]);
 			_logOutput->print(": ");
 		}
@@ -284,7 +285,7 @@ private:
 		va_start(args, msg);
 		print(msg, args);
 
-		if(_suffix != NULL)
+		if(_suffix != nullptr)
 		{
 			_suffix(_logOutput);
 		}
@@ -296,8 +297,8 @@ private:
 	bool _showLevel;
 	Print* _logOutput;
 
-	printfunction _prefix = NULL;
-	printfunction _suffix = NULL;
+	printfunction _prefix = nullptr;
+	printfunction _suffix = nullptr;
 #endif
 };
 

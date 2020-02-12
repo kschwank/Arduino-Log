@@ -45,7 +45,7 @@ This package has been published to the Arduino & PlatformIO package managers, bu
     
     // Start logging text and formatted values
     Log.errorln (  "Log as Error   with binary values             : %b, %B"    , 23  , 345808);
-    Log.warning (F("Log as Warning with integer values from Flash : %d, %d"CR) , 34  , 799870);
+    Log.warn (F("Log as Warning with integer values from Flash : %d, %d"CR) , 34  , 799870);
 ```
 
 [See examples/Log/Log.ino](examples/Log/Log.ino)
@@ -68,10 +68,10 @@ The loglevels available are
 * 0 - LOG_LEVEL_SILENT     no output 
 * 1 - LOG_LEVEL_FATAL      fatal errors 
 * 2 - LOG_LEVEL_ERROR      all errors  
-* 3 - LOG_LEVEL_WARNING    errors, and warnings 
-* 4 - LOG_LEVEL_NOTICE     errors, warnings and notices 
-* 5 - LOG_LEVEL_TRACE      errors, warnings, notices & traces 
-* 6 - LOG_LEVEL_VERBOSE    all 
+* 3 - LOG_LEVEL_WARN       errors, and warnings 
+* 4 - LOG_LEVEL_INFO       errors, warnings and notices 
+* 5 - LOG_LEVEL_DEBUG      errors, warnings, notices & traces 
+* 6 - LOG_LEVEL_TRACE      all 
 ```
 
 example
@@ -89,10 +89,10 @@ The library allows you to log on different levels by the following functions
 ```c++
 void fatal   (const char *format, va_list logVariables); 
 void error   (const char *format, va_list logVariables);
-void warning (const char *format, va_list logVariables);
-void notice  (const char *format, va_list logVariables);
+void warn    (const char *format, va_list logVariables);
+void info    (const char *format, va_list logVariables);
+void debug   (const char *format, va_list logVariables);
 void trace   (const char *format, va_list logVariables);
-void verbose (const char *format, va_list logVariables);
 ```
 
 where the format string can be used to format the log variables
@@ -139,9 +139,9 @@ void logError() {
 ```c++
     Log.fatal     (F("Log as Fatal   with string value from Flash   : %s"CR    ) , "value"     );
     Log.errorln   (  "Log as Error   with binary values             : %b, %B"    , 23  , 345808);
-    Log.warning   (F("Log as Warning with integer values from Flash : %d, %d"CR) , 34  , 799870);
-    Log.notice    (  "Log as Notice  with hexadecimal values        : %x, %X"CR  , 21  , 348972);
-    Log.trace     (  "Log as Trace   with Flash string              : %S"CR    ) , F("value")  );
+    Log.warn      (F("Log as Warning with integer values from Flash : %d, %d"CR) , 34  , 799870);
+    Log.info      (  "Log as Notice  with hexadecimal values        : %x, %X"CR  , 21  , 348972);
+    Log.debug     (  "Log as Trace   with Flash string              : %S"CR    ) , F("value")  );
     Log.verboseln (F("Log as Verbose with bool value from Flash     : %t, %T"  ) , true, false );
 ```
 

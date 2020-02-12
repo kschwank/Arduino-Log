@@ -22,7 +22,7 @@ void setup() {
     randomSeed(analogRead(0));
     // Pass log level, whether to show log level, and print interface.
     // Available levels are:
-    // LOG_LEVEL_SILENT, LOG_LEVEL_FATAL, LOG_LEVEL_ERROR, LOG_LEVEL_WARNING, LOG_LEVEL_NOTICE, LOG_LEVEL_TRACE, LOG_LEVEL_VERBOSE
+    // LOG_LEVEL_SILENT, LOG_LEVEL_FATAL, LOG_LEVEL_ERROR, LOG_LEVEL_WARN, LOG_LEVEL_INFO, LOG_LEVEL_DEBUG, LOG_LEVEL_VERBOSE
     // Note: if you want to fully remove all logging code, uncomment #define DISABLE_LOGGING in Logging.h
     //       this will significantly reduce your project size
 
@@ -32,9 +32,10 @@ void setup() {
 
     //Start logging
 
-    Log.notice(F(CR "******************************************" CR));                     // Info string with Newline
-    Log.notice(  "***          Logging example                " CR);                       // Info string in flash memory
-    Log.notice(F("******************* ")); Log.notice("*********************** " CR);      // two info strings without newline
+    Log.info(F(CR "******************************************" CR));                     // Info string with Newline
+    Log.info("***          Logging example                " CR);                       // Info string in flash memory
+    Log.info(F("******************* "));
+    Log.info("*********************** " CR);      // two info strings without newline
 }
 
 void loop() {
@@ -51,28 +52,28 @@ void loop() {
     //__FlashStringHelper cannot be declared oustide a function
     const __FlashStringHelper * flashCharArray2 = F("this is a string");
 
-    Log.notice   (  "Log as Info with integer values : %d, %d" CR                  , intValue1,  intValue2);
-    Log.notice   (F("Log as Info with hex values     : %x, %X" CR                 ), intValue1,  intValue1);
-    Log.notice   (  "Log as Info with hex values     : %x, %X" CR                  , intValue2,  intValue2);
-    Log.notice   (F("Log as Info with binary values  : %b, %B" CR                 ), intValue1,  intValue1);
-    Log.notice   (  "Log as Info with binary values  : %b, %B" CR                  , intValue2,  intValue2);
-    Log.notice   (F("Log as Info with long values    : %l, %l" CR                 ), longValue1, longValue2);
-    Log.notice   (  "Log as Info with bool values    : %t, %T" CR                  , boolValue1, boolValue2);
-    Log.notice   (F("Log as Info with string value   : %s" CR                     ), charArray);
-    Log.notice   (  "Log as Info with Flash string value   : %S" CR                , flashCharArray1);
-    Log.notice   (  "Log as Info with Flash string value   : %S" CR                , flashCharArray2);
-    Log.notice   (  "Log as Info with string value   : %s" CR                      , stringValue1.c_str());
-    Log.notice   (F("Log as Info with float value   : %F" CR                      ), floatValue);
-    Log.notice   (  "Log as Info with float value   : %F" CR                       , floatValue);
-    Log.notice   (F("Log as Info with double value   : %D" CR                     ), doubleValue);
-    Log.notice   (  "Log as Info with double value   : %D" CR                      , doubleValue);
-    Log.notice   (F("Log as Debug with mixed values  : %d, %d, %l, %l, %t, %T" CR ), intValue1 , intValue2,
-                longValue1, longValue2, boolValue1, boolValue2);
-    Log.trace    (  "Log as Trace with bool value    : %T" CR                      , boolValue1);
-    Log.warning  (  "Log as Warning with bool value  : %T" CR                      , boolValue1);
+    Log.info("Log as Info with integer values : %d, %d" CR, intValue1, intValue2);
+    Log.info(F("Log as Info with hex values     : %x, %X" CR), intValue1, intValue1);
+    Log.info("Log as Info with hex values     : %x, %X" CR, intValue2, intValue2);
+    Log.info(F("Log as Info with binary values  : %b, %B" CR), intValue1, intValue1);
+    Log.info("Log as Info with binary values  : %b, %B" CR, intValue2, intValue2);
+    Log.info(F("Log as Info with long values    : %l, %l" CR), longValue1, longValue2);
+    Log.info("Log as Info with bool values    : %t, %T" CR, boolValue1, boolValue2);
+    Log.info(F("Log as Info with string value   : %s" CR), charArray);
+    Log.info("Log as Info with Flash string value   : %S" CR, flashCharArray1);
+    Log.info("Log as Info with Flash string value   : %S" CR, flashCharArray2);
+    Log.info("Log as Info with string value   : %s" CR, stringValue1.c_str());
+    Log.info(F("Log as Info with float value   : %F" CR), floatValue);
+    Log.info("Log as Info with float value   : %F" CR, floatValue);
+    Log.info(F("Log as Info with double value   : %D" CR), doubleValue);
+    Log.info("Log as Info with double value   : %D" CR, doubleValue);
+    Log.info(F("Log as Debug with mixed values  : %d, %d, %l, %l, %t, %T" CR), intValue1, intValue2,
+             longValue1, longValue2, boolValue1, boolValue2);
+    Log.debug("Log as Trace with bool value    : %T" CR, boolValue1);
+    Log.warn("Log as Warning with bool value  : %T" CR, boolValue1);
     Log.error    (  "Log as Error with bool value    : %T" CR                      , boolValue1);
     Log.fatal    (  "Log as Fatal with bool value    : %T" CR                      , boolValue1);
-    Log.verbose  (F("Log as Verbose with bool value   : %T" CR CR CR               ), boolValue2);
+    Log.trace(F("Log as Verbose with bool value   : %T" CR CR CR), boolValue2);
     delay(5000);
 }
 
