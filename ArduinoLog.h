@@ -40,7 +40,7 @@ typedef void (*printfunction)(Print*);
 #define LOG_LEVEL_TRACE   6
 
 #define CR "\n"
-#define LOGGING_VERSION 1_0_3
+#define LOGGING_VERSION 2_0_0
 
 /**
  * Logging is a helper class to output informations over
@@ -50,23 +50,9 @@ typedef void (*printfunction)(Print*);
  * All methods are able to handle any number of output parameters.
  * All methods print out a formated string (like printf).<br>
  * To reduce output and program size, reduce loglevel.
- * 
- * Output format string can contain below wildcards. Every wildcard
- * must be start with percent sign (\%)
- * 
- * ---- Wildcards
- * 
- * %s	replace with an string (char*)
- * %c	replace with an character
- * %d	replace with an integer value
- * %l	replace with an long value
- * %x	replace and convert integer value into hex
- * %X	like %x but combine with 0x123AB
- * %b	replace and convert integer value into binary
- * %B	like %x but combine with 0b10100011
- * %t	replace and convert boolean value into "t" or "f"
- * %T	like %t but convert into "true" or "false"
- * 
+ *
+ * Version 2 uses the Print target's implementation of printf.
+ *
  * ---- Loglevels
  * 
  * 0 - LOG_LEVEL_SILENT     no output
@@ -256,13 +242,7 @@ public:
 	}
 
 private:
-	void print(const char *format, va_list args);
-
-	void print(const __FlashStringHelper *format, va_list args);
-
-	void printFormat(const char format, va_list *args);
-
-	template <class T> void printLevel(int level, T msg, ...)
+	template <class T, class... Args> void printLevel(int level, T msg, Args... args)
 	{
 #ifndef DISABLE_LOGGING
 		if (level > _level)
@@ -281,9 +261,7 @@ private:
 			_logOutput->print(": ");
 		}
 
-		va_list args;
-		va_start(args, msg);
-		print(msg, args);
+		_logOutput->printf(msg, args...);
 
 		if(_suffix != nullptr)
 		{
